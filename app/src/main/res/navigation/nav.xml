@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.vovasapp.fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registrFragment2"
+            app:destination="@id/registrFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.vovasapp.fragments.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_messangerFragment"
+            app:destination="@id/messangerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messangerFragment"
+        android:name="com.example.vovasapp.fragments.MessangerFragment"
+        android:label="fragment_messanger"
+        tools:layout="@layout/fragment_messanger" />
+    <fragment
+        android:id="@+id/registrFragment2"
+        android:name="com.example.vovasapp.fragments.RegistrFragment"
+        android:label="fragment_registr"
+        tools:layout="@layout/fragment_registr" >
+        <action
+            android:id="@+id/action_registrFragment2_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+</navigation>
