@@ -3,12 +3,12 @@ package com.example.vovasapp.fragments
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vovasapp.R
 import com.example.vovasapp.RetrofitToken
@@ -28,9 +28,10 @@ class LoginFragment : Fragment() {
     }
 
     fun checkTokenInSharedPreferences(): Boolean {
-        val sharedPreferences = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = context?.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
         val token = sharedPreferences?.getString("token", "")
-        return token?.isNotEmpty()!!
+        Log.d("checkTokenInSharedPreferences", token!!)
+        return token.isNotEmpty()
     }
 
 
@@ -85,9 +86,9 @@ class LoginFragment : Fragment() {
     }
 
     fun saveTokenToSharedPreferences(token: String) {
-        val sharedPreferences = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val sharedPreferences = context?.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
         editor?.putString("token", token)?.apply()
+        Log.d("saveTokenToSharedPreferences", token)
     }
-
 }

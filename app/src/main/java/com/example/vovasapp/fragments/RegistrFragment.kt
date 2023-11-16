@@ -1,12 +1,17 @@
 package com.example.vovasapp.fragments
 
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vovasapp.R
+import com.example.vovasapp.RetrofitToken
 import com.example.vovasapp.databinding.FragmentRegistrBinding
 import com.example.vovasapp.func.showErrorMessage
 
@@ -24,37 +29,58 @@ class RegistrFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnSingIn.setOnClickListener {
-                if (binding.edEmail.text?.isEmpty() == true && binding.edPassword.text?.isEmpty() == true) {
+        val generateToken = RetrofitToken(requireContext())
+        if (checkTokenInSharedPreferences()) {
+            findNavController().navigate(R.id.action_registrFragment2_to_mainFragment)
+        } else {
+            binding.register.setOnClickListener {
+                if (binding.edEmail.text?.isEmpty() == true) {
                     binding.textInputLayout2.error = "Empty login"
-                    binding.textInputLayout3.error = "Empty password"
 
-                    binding.textInputLayout2.editText?.setOnFocusChangeListener { _, hasFocus ->
-                        if (!hasFocus) {
-                            if (binding.textInputLayout2.editText?.text.isNullOrEmpty()) {
-                                showErrorMessage(binding.textInputLayout2, "Empty")
-                            } else {
-                                binding.textInputLayout2.error = null
-                            }
+                    binding.textInputLayout2.editText?.doAfterTextChanged {
+                        if (binding.textInputLayout2.editText?.text.isNullOrEmpty()) {
+                            showErrorMessage(binding.textInputLayout2, "Empty")
+                        } else {
+                            binding.textInputLayout2.error = null
                         }
                     }
-
-                    binding.textInputLayout3.editText?.setOnFocusChangeListener { _, hasFocus ->
-                        if (!hasFocus) {
-                            if (binding.textInputLayout3.editText?.text.isNullOrEmpty()) {
-                                showErrorMessage(binding.textInputLayout3, "Empty")
-                            } else {
-                                binding.textInputLayout3.error = null
-                            }
+                }
+                else if (binding.edPassword.text?.isEmpty() == true){
+                    binding.textInputLayout3.error = "Empty password"
+                    binding.textInputLayout3.editText?.doAfterTextChanged {
+                        if (binding.textInputLayout3.editText?.text.isNullOrEmpty()) {
+                            showErrorMessage(binding.textInputLayout3, "Empty")
+                        } else {
+                            binding.textInputLayout3.error = null
                         }
                     }
                 }
                 else {
-                    findNavController().navigate(R.id.action_registrFragment2_to_loginFragment)
+                    generateToken.takeTokenAfterReg(binding.edEmail.text.toString(), binding.edPassword.text.toString()) { token, passwordFailed ,loginFailed ->
+                        if (token.isNotEmpty()){
+                            saveTokenToSharedPreferences(token)
+                            Log.d("TOKEN",token)
+                            findNavController().navigate(R.id.action_registrFragment2_to_mainFragment)
+                        }
+                        else if (loginFailed?.isNotEmpty()!!){
+                            Toast.makeText(requireContext(), "Такой пользователь уже есть.", Toast.LENGTH_SHORT).show()
+                        }
+                        else if (passwordFailed?.isNotEmpty()!!){
+                            Toast.makeText(requireContext(), "Пароль должен содержать минимум 8 символов.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
+            }
         }
-        binding.singIn.setOnClickListener {
-            findNavController().navigate(R.id.action_registrFragment2_to_loginFragment)
-        }
+    }
+    fun checkTokenInSharedPreferences(): Boolean {
+        val sharedPreferences = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences?.getString("token", "")
+        return token?.isNotEmpty()!!
+    }
+    fun saveTokenToSharedPreferences(token: String) {
+        val sharedPreferences = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putString("token", token)?.apply()
     }
 }

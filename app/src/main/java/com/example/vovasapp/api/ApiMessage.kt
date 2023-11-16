@@ -1,12 +1,10 @@
 package com.example.vovasapp.api
 
-import com.example.vovasapp.dto.GptModel
-import com.example.vovasapp.dto.MessageFromServer
 import retrofit2.Call
-import retrofit2.http.GET
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface ApiMessage  {
-    @GET("")
-    fun sendRequest(): Call<List<MessageFromServer>>
-
+    @POST(".")
+    fun sendRequest(@Body requestBody: String) : Call<List<String>>
 }

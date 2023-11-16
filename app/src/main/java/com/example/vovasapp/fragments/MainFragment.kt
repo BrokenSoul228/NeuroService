@@ -1,5 +1,7 @@
 package com.example.vovasapp.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,9 +15,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.vovasapp.R
 import com.example.vovasapp.adapter.GptAdapter
 import com.example.vovasapp.api.ApiService
-import com.example.vovasapp.api.ApiToken
 import com.example.vovasapp.databinding.FragmentMainBinding
 import com.example.vovasapp.dto.GptModel
+import com.example.vovasapp.func.AuthInterceptor
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,8 +31,8 @@ class MainFragment : Fragment() {
     private lateinit var binding : FragmentMainBinding
     private lateinit var listView : ListView
     private lateinit var callback: OnBackPressedCallback
-//    private val sharedPreferencesKey = "MyPreferences"
-//    private lateinit var sharedPref: SharedPreferences
+    private val sharedPreferencesKey = "MyPreferences"
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +47,14 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
+        sharedPref = context?.getSharedPreferences(sharedPreferencesKey, Context.MODE_PRIVATE)!!
         return binding.root
     }
 
     fun getNeuro(selectedModel : GptModel) {
         val bundle = Bundle().apply {
             putString("Name Neuron", selectedModel.name)
+            putString("ID Model", selectedModel.id.toString())
         }
         val navController = findNavController()
         navController.navigate(R.id.action_mainFragment_to_messangerFragment, bundle)
@@ -70,8 +75,16 @@ class MainFragment : Fragment() {
     }
 
     fun getGptModel(gptListView: MutableList<GptModel>, gptAdapter: GptAdapter) {
+
+        val editor = sharedPref.getString("token", "")
+        val authInterceptor = AuthInterceptor(editor!!)
+        Log.d("EDITOR", editor)
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.246.171:8080/")
+            .client(OkHttpClient.Builder()
+                .addInterceptor(authInterceptor)
+                .build())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

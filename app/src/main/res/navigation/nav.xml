@@ -37,7 +37,7 @@
         android:label="fragment_registr"
         tools:layout="@layout/fragment_registr" >
         <action
-            android:id="@+id/action_registrFragment2_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_registrFragment2_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>
