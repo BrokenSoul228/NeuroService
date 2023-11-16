@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="peach">#90ADD8E6</color>
+    <color name="neon">#1DD300FF</color>
 </resources>

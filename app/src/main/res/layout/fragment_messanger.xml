@@ -19,19 +19,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/nameNeuro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/named_style"
+        app:layout_constraintTop_toBottomOf="@+id/nameNeuro"></TextView>
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="8dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textInput"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameNeuro">
-    </ListView>
+        app:layout_constraintTop_toBottomOf="@+id/line"></ListView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInput"

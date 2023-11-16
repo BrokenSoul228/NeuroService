@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
+import com.example.vovasapp.adapter.MessageAdapter
 import com.example.vovasapp.api.ApiMessage
 import com.example.vovasapp.databinding.FragmentMessangerBinding
 import com.example.vovasapp.func.AuthInterceptor
@@ -46,8 +47,8 @@ class MessangerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listView = binding.listView
-        messageList = mutableListOf()
-        arrayAdapter = ArrayAdapter(requireContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, messageList)
+        messageList = mutableListOf("Hello")
+        arrayAdapter = MessageAdapter(requireContext(), messageList)
         listView.adapter = arrayAdapter
         val bundle = arguments
         if (bundle != null) {
@@ -60,6 +61,7 @@ class MessangerFragment : Fragment() {
             if (binding.textEdit.text?.isNotEmpty()!!){
                 sendMessageToServer(binding.textEdit.text.toString())
                 arrayAdapter.notifyDataSetChanged()
+                binding.textEdit.text = null
             }
         }
     }
@@ -86,8 +88,10 @@ class MessangerFragment : Fragment() {
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>> ) {
                 if (response.isSuccessful) {
                     val messageResponse = response.body()
-                    for (i in messageResponse!!){
-                        (messageList as MutableList).add(i)
+                    messageResponse?.let {
+                        messageList = it
+                        arrayAdapter.clear()
+                        arrayAdapter.addAll(messageList)
                         arrayAdapter.notifyDataSetChanged()
                     }
                 }
