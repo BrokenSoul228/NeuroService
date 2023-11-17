@@ -18,6 +18,7 @@ import com.example.vovasapp.api.ApiService
 import com.example.vovasapp.databinding.FragmentMainBinding
 import com.example.vovasapp.dto.GptModel
 import com.example.vovasapp.func.AuthInterceptor
+import com.example.vovasapp.func.showSimpleDialog
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,6 +72,9 @@ class MainFragment : Fragment() {
         listView.setOnItemClickListener { _, _, position, _ ->
             val selectedModel = gptAdapter.getItem(position) as? GptModel
             selectedModel?.let { getNeuro(it) }
+        }
+        binding.info.setOnClickListener {
+            showSimpleDialog(requireContext(), "Справка", "Это страница со списком нейронных сетей, которые могут выполнять различные действия , необходимые человеку в разных сферах деятельности.")
         }
     }
 

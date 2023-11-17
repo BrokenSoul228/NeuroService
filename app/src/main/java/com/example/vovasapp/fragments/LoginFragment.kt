@@ -1,11 +1,15 @@
 package com.example.vovasapp.fragments
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -13,11 +17,16 @@ import androidx.navigation.fragment.findNavController
 import com.example.vovasapp.R
 import com.example.vovasapp.RetrofitToken
 import com.example.vovasapp.databinding.FragmentLoginBinding
+import com.example.vovasapp.func.setGif
 import com.example.vovasapp.func.showErrorMessage
+import java.util.Locale
+import java.util.Objects
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding : FragmentLoginBinding
+    lateinit var outputTV: TextView
+    private val REQUEST_CODE_SPEECH_INPUT = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +46,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setGif(requireContext(), R.drawable.registr, binding.background)
+        outputTV = binding.outPut
         val generateToken = RetrofitToken(requireContext())
         binding.register.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registrFragment2)
@@ -49,35 +60,39 @@ class LoginFragment : Fragment() {
                     binding.textInputLayout2.error = "Empty login"
 
                     binding.textInputLayout2.editText?.doAfterTextChanged {
-                            if (binding.textInputLayout2.editText?.text.isNullOrEmpty()) {
-                                showErrorMessage(binding.textInputLayout2, "Empty")
-                            } else {
-                                binding.textInputLayout2.error = null
-                            }
+                        if (binding.textInputLayout2.editText?.text.isNullOrEmpty()) {
+                            showErrorMessage(binding.textInputLayout2, "Empty")
+                        } else {
+                            binding.textInputLayout2.error = null
+                        }
                     }
-                }
-                else if (binding.edPassword.text?.isEmpty() == true){
+                } else if (binding.edPassword.text?.isEmpty() == true) {
                     binding.textInputLayout3.error = "Empty password"
                     binding.textInputLayout3.editText?.doAfterTextChanged {
-                            if (binding.textInputLayout3.editText?.text.isNullOrEmpty()) {
-                                showErrorMessage(binding.textInputLayout3, "Empty")
-                            } else {
-                                binding.textInputLayout3.error = null
-                            }
+                        if (binding.textInputLayout3.editText?.text.isNullOrEmpty()) {
+                            showErrorMessage(binding.textInputLayout3, "Empty")
+                        } else {
+                            binding.textInputLayout3.error = null
+                        }
                     }
-                }
-                else {
-                    generateToken.takeToken(binding.edEmail.text.toString(), binding.edPassword.text.toString()) { token, passwordFailed ,loginFailed ->
-                        if (token.isNotEmpty()){
+                } else {
+                    generateToken.takeToken(
+                        binding.edEmail.text.toString(),
+                        binding.edPassword.text.toString()
+                    ) { token, passwordFailed, loginFailed ->
+                        if (token.isNotEmpty()) {
                             saveTokenToSharedPreferences(token)
-                            Log.d("TOKEN",token)
+                            Log.d("TOKEN", token)
                             findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                        }
-                        else if (loginFailed?.isNotEmpty()!!){
-                            Toast.makeText(requireContext(), "Пользователь не найден", Toast.LENGTH_SHORT).show()
-                        }
-                        else if (passwordFailed?.isNotEmpty()!!){
-                            Toast.makeText(requireContext(), "Неверный пароль", Toast.LENGTH_SHORT).show()
+                        } else if (loginFailed?.isNotEmpty()!!) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Пользователь не найден",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else if (passwordFailed?.isNotEmpty()!!) {
+                            Toast.makeText(requireContext(), "Неверный пароль", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }

@@ -2,6 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.VovasApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="color">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="colorAccent">@color/white</item>
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 

@@ -33,7 +33,7 @@ class RegistrFragment : Fragment() {
         if (checkTokenInSharedPreferences()) {
             findNavController().navigate(R.id.action_registrFragment2_to_mainFragment)
         } else {
-            binding.register.setOnClickListener {
+            binding.btnSingIn.setOnClickListener {
                 if (binding.edEmail.text?.isEmpty() == true) {
                     binding.textInputLayout2.error = "Empty login"
 

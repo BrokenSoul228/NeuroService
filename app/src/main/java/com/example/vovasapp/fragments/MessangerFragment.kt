@@ -1,19 +1,28 @@
 package com.example.vovasapp.fragments
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.vovasapp.adapter.MessageAdapter
 import com.example.vovasapp.api.ApiMessage
 import com.example.vovasapp.databinding.FragmentMessangerBinding
 import com.example.vovasapp.func.AuthInterceptor
+import com.example.vovasapp.func.hideKeyboard
+import com.example.vovasapp.func.showSimpleDialog
 import com.example.vovasapp.func.showToast
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -22,6 +31,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.util.Locale
+import java.util.Objects
 
 class MessangerFragment : Fragment() {
 
@@ -30,6 +41,8 @@ class MessangerFragment : Fragment() {
     private lateinit var messageList : List<String>
     private lateinit var arrayAdapter : ArrayAdapter<String>
 
+    lateinit var outputTV: TextView
+    private val REQUEST_CODE_SPEECH_INPUT = 1
     private val sharedPreferencesKey = "MyPreferences"
     private lateinit var sharedPref: SharedPreferences
 
@@ -47,7 +60,8 @@ class MessangerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         listView = binding.listView
-        messageList = mutableListOf("Hello")
+        outputTV = binding.outPut
+        messageList = mutableListOf()
         arrayAdapter = MessageAdapter(requireContext(), messageList)
         listView.adapter = arrayAdapter
         val bundle = arguments
@@ -62,6 +76,35 @@ class MessangerFragment : Fragment() {
                 sendMessageToServer(binding.textEdit.text.toString())
                 arrayAdapter.notifyDataSetChanged()
                 binding.textEdit.text = null
+                hideKeyboard()
+            }
+        }
+        binding.micOn.setOnClickListener {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak to text")
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT)
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(), "Error: " + e.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        binding.info.setOnClickListener {
+            showSimpleDialog(requireContext(), "Справка", "Общение с нейронкойб отправляйте ваше сообщение и получите ответ от нейронки. Хорошего использования!")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
+            if (resultCode == RESULT_OK && data != null) {
+                val res: ArrayList<String> =
+                    data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS) as ArrayList<String>
+                binding.textEdit.setText(res[0])
             }
         }
     }

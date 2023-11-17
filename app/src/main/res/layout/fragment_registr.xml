@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/back3"
     tools:context=".fragments.RegistrFragment">
 
     <TextView
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="172dp"
         android:text="Register"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -27,6 +28,11 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         android:hint="Email"
+        app:boxBackgroundColor="#57837F7F"
+        app:boxStrokeWidth="2dp"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -48,6 +54,11 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         android:hint="Password"
+        app:boxBackgroundColor="#57837F7F"
+        app:boxStrokeWidth="2dp"
+        app:hintTextColor="@color/white"
+        app:boxStrokeColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
@@ -61,13 +72,12 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <Button
-        android:id="@+id/register"
+        android:id="@+id/btn_singIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:backgroundTint="#4DBAB6"
+        android:backgroundTint="#00C5FF"
         android:text="Register"
         android:textColor="@color/white"
         android:textSize="18sp"
