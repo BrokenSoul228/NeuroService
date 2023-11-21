@@ -3,6 +3,8 @@ package com.example.vovasapp.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -105,7 +107,7 @@ class MainFragment : Fragment() {
                         gptAdapter.notifyDataSetChanged()
                     }
                 } else {
-                    Toast.makeText(requireContext(), "Ошибка получения с сервера", Toast.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_mainFragment_to_messangerFragment)
                 }
             }
 

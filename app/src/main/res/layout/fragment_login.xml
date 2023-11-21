@@ -33,16 +33,7 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/micOn"></TextView>
-
-    <ImageView
-        android:id="@+id/micOn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/baseline_mic_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></ImageView>
+        app:layout_constraintStart_toStartOf="parent"></TextView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout2"
