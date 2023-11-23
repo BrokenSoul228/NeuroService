@@ -45,5 +45,8 @@
         <action
             android:id="@+id/action_registrFragment2_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_registrFragment2_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

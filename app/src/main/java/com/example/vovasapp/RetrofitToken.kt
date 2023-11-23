@@ -17,17 +17,23 @@ class RetrofitToken(val context: Context) {
 
     private val sharedPreferencesKey = "MyPreferences"
     private var sharedPref: SharedPreferences
+    private var sharedPrefKey: SharedPreferences
 
     init {
         sharedPref = context.getSharedPreferences(sharedPreferencesKey, Context.MODE_PRIVATE)
+        sharedPrefKey = context.getSharedPreferences("Server", Context.MODE_PRIVATE)
     }
 
     fun takeToken(mainLogin : String, mainPassword : String, callback: (String, String?, String?) -> Unit) {
 
+        var editorServer = sharedPrefKey.getString("serverAddress", "")
+        if (editorServer?.isEmpty() == true || editorServer?.isBlank() == true){
+            editorServer = "http://192.168.246.171:8080/"
+        }
         val gson = GsonBuilder().setLenient().create()
-
+        Log.d("EDITORFFFFFFFFFFF", editorServer.toString() )
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.246.171:8080/auth/")
+            .baseUrl("${editorServer}auth/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -63,9 +69,13 @@ class RetrofitToken(val context: Context) {
 
     fun takeTokenAfterReg(mainLogin : String, mainPassword : String, callback: (String, String?, String?) -> Unit){
         val gson = GsonBuilder().setLenient().create()
-
+        var editorServer = sharedPref.getString("serverAddress", "")
+        Log.d("RetrofitToken", editorServer.toString())
+        if (editorServer?.isEmpty() == true || editorServer?.isBlank() == true){
+            editorServer = "http://192.168.246.171:8080/"
+        }
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.246.171:8080/auth/")
+            .baseUrl("${editorServer}auth/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

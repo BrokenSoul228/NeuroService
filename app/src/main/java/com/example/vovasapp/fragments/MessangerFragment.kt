@@ -112,9 +112,11 @@ class MessangerFragment : Fragment() {
     fun sendMessageToServer(message : String){
         val editor = sharedPref.getString("token", "")
         val authInterceptor = AuthInterceptor(editor!!)
+        val sharedPrefKey = context?.getSharedPreferences("Server", Context.MODE_PRIVATE)
+        val editorServer = sharedPrefKey?.getString("serverAddress", "")
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.246.171:8080/networks/${idModel}/")
+            .baseUrl("${editorServer}networks/${idModel}/")
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(authInterceptor)
@@ -144,7 +146,7 @@ class MessangerFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<List<String>> , t: Throwable) {
-                Log.d("GPTRETROFIT", t.message.toString())
+                Log.d("MessengerFragment", t.message.toString())
             }
         })
     }

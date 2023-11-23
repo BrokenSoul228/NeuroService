@@ -60,7 +60,8 @@ class RegistrFragment : Fragment() {
                         if (token.isNotEmpty()){
                             saveTokenToSharedPreferences(token)
                             Log.d("TOKEN",token)
-                            findNavController().navigate(R.id.action_registrFragment2_to_mainFragment)
+                            findNavController().navigate(R.id.action_registrFragment2_to_loginFragment)
+                            Toast.makeText(requireContext(), "Вы успешно зарегистрировались", Toast.LENGTH_SHORT).show()
                         }
                         else if (loginFailed?.isNotEmpty()!!){
                             Toast.makeText(requireContext(), "Такой пользователь уже есть.", Toast.LENGTH_SHORT).show()
