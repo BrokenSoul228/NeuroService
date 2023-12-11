@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.vovasapp.adapter.MessageAdapter
+import com.example.vovasapp.api.ApiListHistory
 import com.example.vovasapp.api.ApiMessage
 import com.example.vovasapp.databinding.FragmentMessangerBinding
 import com.example.vovasapp.func.AuthInterceptor
@@ -71,6 +72,7 @@ class MessangerFragment : Fragment() {
             Log.d("BUNDLE", idModel)
             binding.nameNeuro.text = params
         }
+        takeAllMessageList()
         binding.send.setOnClickListener {
             if (binding.textEdit.text?.isNotEmpty()!!){
                 sendMessageToServer(binding.textEdit.text.toString())
@@ -94,7 +96,7 @@ class MessangerFragment : Fragment() {
             }
         }
         binding.info.setOnClickListener {
-            showSimpleDialog(requireContext(), "Справка", "Общение с нейронкойб отправляйте ваше сообщение и получите ответ от нейронки. Хорошего использования!")
+            showSimpleDialog(requireContext(), "Справка", "Общение с нейронкой, отправляйте ваше сообщение и получите ответ от нейронки. Хорошего использования!")
         }
     }
 
@@ -142,6 +144,48 @@ class MessangerFragment : Fragment() {
                 }
             else {
                 showToast(requireContext(), "Ошибка получения с сервера")
+                }
+            }
+
+            override fun onFailure(call: Call<List<String>> , t: Throwable) {
+                Log.d("MessengerFragment", t.message.toString())
+            }
+        })
+    }
+
+    fun takeAllMessageList(){
+        val editor = sharedPref.getString("token", "")
+        val authInterceptor = AuthInterceptor(editor!!)
+        val sharedPrefKey = context?.getSharedPreferences("Server", Context.MODE_PRIVATE)
+        val editorServer = sharedPrefKey?.getString("serverAddress", "")
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("${editorServer}networks/${idModel}/")
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(authInterceptor)
+                    .build()
+            )
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiListHistory::class.java)
+        val postRequest = apiService.takeList()
+
+        postRequest.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>> ) {
+                if (response.isSuccessful) {
+                    val messageResponse = response.body()
+                    messageResponse?.let {
+                        messageList = it
+                        arrayAdapter.clear()
+                        arrayAdapter.addAll(messageList)
+                        arrayAdapter.notifyDataSetChanged()
+                    }
+                }
+                else {
+                    showToast(requireContext(), "Ошибка получения с сервера")
                 }
             }
 

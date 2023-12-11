@@ -12,14 +12,15 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@drawable/neuro_image_removebg_preview"
-        android:label="Talk whit neuron"
+        android:label="Talk with neuron"
         android:roundIcon="@drawable/neuro_image_removebg_preview"
         android:supportsRtl="true"
         android:theme="@style/Theme.VovasApp"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

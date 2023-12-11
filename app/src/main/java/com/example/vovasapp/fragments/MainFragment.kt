@@ -3,26 +3,21 @@ package com.example.vovasapp.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.vovasapp.R
 import com.example.vovasapp.adapter.GptAdapter
 import com.example.vovasapp.api.ApiService
-import com.example.vovasapp.api.ApiToken
 import com.example.vovasapp.databinding.FragmentMainBinding
 import com.example.vovasapp.dto.GptModel
 import com.example.vovasapp.func.AuthInterceptor
 import com.example.vovasapp.func.showSimpleDialog
-import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -130,7 +125,7 @@ class MainFragment : Fragment() {
 //        editor.apply()
 //    }
 
-    fun checkExpired(context: Context, callback: (String) -> Unit) {
+    fun checkExpired(context: Context, callback: (String, String?) -> Unit) {
         val sharedPrefKey = context.getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)!!
         val editor = sharedPrefKey.getString("token", "")
         val authInterceptor = AuthInterceptor(editor!!)
@@ -160,17 +155,21 @@ class MainFragment : Fragment() {
                     val gptModelList = response.body().toString()
                     endResponse = gptModelList
                     Log.d("ENDRESPONSE", endResponse)
-                    callback(endResponse?: "")
+                    callback(endResponse?: "", "NotResp")
                 }
                 else {
                     endResponse = ""
-                    callback(endResponse)
+                    callback(endResponse, "")
                     Log.d("CALLLLLLLLLL", endResponse)
+                    Log.d("Server not response", "OTVEJAY")
                 }
             }
 
             override fun onFailure(call: Call<List<GptModel>>, t: Throwable) {
                 Log.d("MainFragmentCheckExpired", t.message.toString())
+                Log.d("Server not response", "ON V OnFailure")
+                val nothing = ""
+                callback(nothing, "NotResp")
             }
         })
     }
@@ -215,5 +214,4 @@ class MainFragment : Fragment() {
 //        })
 //        return mainPassword
 //    }
-
 }
