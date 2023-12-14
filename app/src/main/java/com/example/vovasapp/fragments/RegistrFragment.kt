@@ -1,5 +1,6 @@
 package com.example.vovasapp.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.vovasapp.R
 import com.example.vovasapp.RetrofitToken
 import com.example.vovasapp.databinding.FragmentRegistrBinding
+import com.example.vovasapp.func.saveAddressServer
 import com.example.vovasapp.func.showErrorMessage
+import com.google.android.material.textfield.TextInputLayout
 
 class RegistrFragment : Fragment() {
 
@@ -29,6 +32,9 @@ class RegistrFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.serverId.setOnClickListener{
+            showAlertWithEditText(requireContext())
+        }
         val generateToken = RetrofitToken(requireContext())
         if (checkTokenInSharedPreferences()) {
             findNavController().navigate(R.id.action_registrFragment2_to_mainFragment)
@@ -74,6 +80,29 @@ class RegistrFragment : Fragment() {
             }
         }
     }
+
+    fun showAlertWithEditText(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Введите адрес")
+        val inflater = LayoutInflater.from(context)
+        val inputLayout = inflater.inflate(R.layout.edit_text_view, null) as TextInputLayout
+        builder.setView(inputLayout)
+        val input = inputLayout.editText?.text
+        builder.setPositiveButton("OK") { dialog, which ->
+            binding.serverId.text = input
+            val enteredText = input
+            saveAddressServer(enteredText.toString(), requireContext())
+        }
+
+        // Установка кнопки "Отмена" для закрытия диалогового окна
+        builder.setNegativeButton("Отмена") { dialog, which ->
+            dialog.cancel()
+        }
+
+        // Отображение диалогового окна
+        builder.show()
+    }
+
     fun checkTokenInSharedPreferences(): Boolean {
         val sharedPreferences = context?.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val token = sharedPreferences?.getString("token", "")

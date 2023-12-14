@@ -3,6 +3,7 @@ package com.example.vovasapp
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import android.view.Display.Mode
 import com.example.vovasapp.api.ApiRegistr
 import com.example.vovasapp.api.ApiToken
 import com.google.gson.GsonBuilder
@@ -25,15 +26,15 @@ class RetrofitToken(val context: Context) {
     }
 
     fun takeToken(mainLogin : String, mainPassword : String, callback: (String, String?, String?) -> Unit) {
-
+        var editor = context.getSharedPreferences("Server", Context.MODE_PRIVATE).getString("serverAddress", "")
         var editorServer = sharedPrefKey.getString("serverAddress", "")
-        if (editorServer?.isEmpty() == true || editorServer?.isBlank() == true){
-            editorServer = "http://192.168.246.171:8080/"
+        if (editor?.isEmpty() == true || editor?.isBlank() == true){
+            editor = "http://192.168.246.171:8080/"
         }
         val gson = GsonBuilder().setLenient().create()
-        Log.d("EDITORFFFFFFFFFFF", editorServer.toString() )
+        Log.d("EDITORFFFFFFFFFFF", editor.toString() )
         val retrofit = Retrofit.Builder()
-            .baseUrl("${editorServer}auth/")
+            .baseUrl("${editor}auth/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -69,13 +70,13 @@ class RetrofitToken(val context: Context) {
 
     fun takeTokenAfterReg(mainLogin : String, mainPassword : String, callback: (String, String?, String?) -> Unit){
         val gson = GsonBuilder().setLenient().create()
-        var editorServer = sharedPref.getString("serverAddress", "")
-        Log.d("RetrofitToken", editorServer.toString())
-        if (editorServer?.isEmpty() == true || editorServer?.isBlank() == true){
-            editorServer = "http://192.168.246.171:8080/"
+        var editor = context.getSharedPreferences("Server", Context.MODE_PRIVATE).getString("serverAddress", "")
+        Log.d("RetrofitTokenRegister", editor.toString())
+        if (editor?.isEmpty() == true || editor?.isBlank() == true){
+            editor = "http://192.168.246.171:8080/"
         }
         val retrofit = Retrofit.Builder()
-            .baseUrl("${editorServer}auth/")
+            .baseUrl("${editor}auth/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
