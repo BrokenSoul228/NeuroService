@@ -18,6 +18,15 @@
     </ImageView>
 
     <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
+
+    <TextView
         android:id="@+id/nameNeuro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

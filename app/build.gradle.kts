@@ -37,10 +37,19 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.google.mlkit:object-detection:17.0.1")
+    implementation ("com.google.mlkit:text-recognition:16.0.0")
+    implementation ("com.google.mlkit:image-labeling:17.0.8")
+    implementation ("com.google.mlkit:language-id:17.0.5")
+
+    // Import the GPU delegate plugin Library for GPU inference
+    implementation ("org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.4")
+    implementation ("org.tensorflow:tensorflow-lite-gpu:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation("androidx.core:core-ktx:1.9.0")

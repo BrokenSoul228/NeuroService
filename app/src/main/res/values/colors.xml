@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="peach">#90ADD8E6</color>
     <color name="neon">#1DD300FF</color>
+    <color name="gray">#C0C0C0</color>
 </resources>

@@ -32,6 +32,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.time.LocalDateTime
 
 
 class LoginFragment : Fragment() {
@@ -64,6 +65,8 @@ class LoginFragment : Fragment() {
         val shared = context?.getSharedPreferences("Server", Context.MODE_PRIVATE)
         val editor = shared?.getString("server", "")
         outputTV = binding.outPut
+        val time = LocalDateTime.now().toString()
+        outputTV.text = time
         val generateToken = RetrofitToken(requireContext())
         binding.register.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registrFragment2)

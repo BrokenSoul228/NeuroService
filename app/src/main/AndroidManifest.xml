@@ -6,6 +6,8 @@
     </uses-permission>
     <uses-permission android:name="android.permission.RECORD_AUDIO">
     </uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
 
     <application
         android:usesCleartextTraffic="true"

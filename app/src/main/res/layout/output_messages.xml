@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.textview.MaterialTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Primer"
+    android:textSize="18sp"
+    android:textColor="#FFFFFF"
+    android:shadowColor="#808080"
+    android:shadowDx="2"
+    android:shadowDy="2"
+    android:shadowRadius="4"
+    android:elevation="4dp"
+    android:background="@drawable/open_buttoon_designe"
+    android:padding="16dp"/>

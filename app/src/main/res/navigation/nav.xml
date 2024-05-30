@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/openFragment">
 
     <fragment
         android:id="@+id/loginFragment"
@@ -49,4 +49,58 @@
             android:id="@+id/action_registrFragment2_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/openFragment"
+        android:name="com.example.vovasapp.fragments.OpenFragment"
+        android:label="fragment_open"
+        tools:layout="@layout/fragment_open" >
+        <action
+            android:id="@+id/action_openFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_openFragment_to_offlineModeFragment"
+            app:destination="@id/offlineModeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/offlineModeFragment"
+        android:name="com.example.vovasapp.OfflineModeFragment"
+        android:label="fragment_offline_mode"
+        tools:layout="@layout/fragment_offline_mode" >
+        <action
+            android:id="@+id/action_offlineModeFragment_to_lablingFragment"
+            app:destination="@id/lablingFragment" />
+        <action
+            android:id="@+id/action_offlineModeFragment_to_textRegFragment"
+            app:destination="@id/textRegFragment" />
+        <action
+            android:id="@+id/action_offlineModeFragment_to_objectRegFragment"
+            app:destination="@id/objectRegFragment" />
+        <action
+            android:id="@+id/action_offlineModeFragment_to_languageDetectFragment"
+            app:destination="@id/languageDetectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/objectRegFragment"
+        android:name="com.example.vovasapp.neuro.ObjectRegFragment"
+        android:label="fragment_object_reg"
+        tools:layout="@layout/fragment_object_reg" />
+    <fragment
+        android:id="@+id/textRegFragment"
+        android:name="com.example.vovasapp.neuro.TextRegFragment"
+        android:label="fragment_text_reg"
+        tools:layout="@layout/fragment_text_reg" >
+        <action
+            android:id="@+id/action_textRegFragment_to_languageDetectFragment"
+            app:destination="@id/languageDetectFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lablingFragment"
+        android:name="com.example.vovasapp.neuro.LablingImageFragment"
+        android:label="fragment_scan_doc"
+        tools:layout="@layout/fragment_scan_doc" />
+    <fragment
+        android:id="@+id/languageDetectFragment"
+        android:name="com.example.vovasapp.neuro.LanguageDetectFragment"
+        android:label="fragment_language_detect"
+        tools:layout="@layout/fragment_language_detect" />
 </navigation>

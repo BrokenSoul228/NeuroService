@@ -15,5 +15,11 @@
         <item name="colorAccent">@color/neon</item>
     </style>
 
+    <style name="CardViewTransparentBorder" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+        <item name="cardElevation">0dp</item>
+        <item name="contentPadding">0dp</item>
+    </style>
+
     <style name="Theme.VovasApp" parent="Base.Theme.VovasApp" />
 </resources>
